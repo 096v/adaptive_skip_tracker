@@ -1,11 +1,4 @@
 """Global-masked parallel LK optical flow estimator with affine transform support.
-
-v2 upgrades:
-1. High-frequency accumulated flow — feature points are updated every frame
-   (t -> t+1 -> t+2 ...), preventing large-displacement breakdown.
-2. Affine transform estimation — ``cv2.estimateAffinePartial2D`` extracts
-   translation + scale from matched point pairs.
-3. BBox center storage — enables spatial matching of offsets to tracks.
 """
 
 from __future__ import annotations

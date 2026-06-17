@@ -1,8 +1,4 @@
 """Adaptive frame-skip ByteTrack — spatial matching + covariance deception.
-
-Fix #1: Track-delta mismatch resolved via nearest-neighbor spatial matching on BBox centers.
-Fix #2: Skip frames only do Kalman predict + covariance deception; cumulative offsets
-        are applied once during keyframe pre-alignment.
 """
 
 from __future__ import annotations

@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adaptive-skip-tracker"
+version = "0.1.0"
+description = "Adaptive frame-skip BYTETracker — optical-flow + Kalman for 3x faster multi-object tracking"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [
+    { name = "aliyun7869160768" },
+]
+keywords = [
+    "computer-vision",
+    "object-tracking",
+    "yolo",
+    "bytetrack",
+    "optical-flow",
+    "kalman-filter",
+    "frame-skip",
+    "video-analytics",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+
+requires-python = ">=3.10"
+dependencies = [
+    "ultralytics>=8.0.0",
+    "opencv-python>=4.5.0",
+    "numpy>=1.21.0",
+    "torch>=1.13.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+benchmarks = ["pandas>=1.3.0"]
+
+[project.urls]
+Homepage = "https://github.com/096v/adaptive_skip_tracker"
+Repository = "https://github.com/096v/adaptive_skip_tracker.git"
+Issues = "https://github.com/096v/adaptive_skip_tracker/issues"
+
+[tool.setuptools.packages.find]
+include = ["adaptive_tracker*"]

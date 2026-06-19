@@ -12,6 +12,22 @@ A **YOLO + BYTETracker adaptive frame-skipping tracker** optimized for edge devi
 
 ---
 
+## Why I Built This 
+
+This project was born from a very practical problem: **while doing industrial pipeline defect inspection, videos routinely run into thousands of frames. Running YOLO detection on every single frame was painfully slow — edge devices and industrial PCs simply couldn't keep up.**
+
+To break through this performance bottleneck, the initial thought was straightforward: *"What if I just skip a few frames of YOLO detection to speed things up?"*
+
+But in real pipeline video tests, naive frame-skipping led to catastrophic consequences: **multi-object tracking IDs went completely haywire, targets overlapped, and bounding boxes jittered and drifted violently when keyframes finally met again.** Pure geometry-based trackers (like vanilla BYTETracker) lose Kalman filter continuity and scale observation during blind intervals — the underlying logic simply breaks.
+
+To solve this thoroughly, **without touching a single line of existing business code**, I rewrote the data association layer and the state estimator, dug deep into the covariance math of Kalman filters, and eventually built this project.
+
+If you're also doing industrial video inspection, assembly-line object tracking, or anything else where inference speed is a constant headache — this drop-in, one-line-change plugin might just save your day.
+
+— numup
+
+---
+
 ## Core Features
 
 1. **Drop-in API** — fully compatible with `ultralytics.YOLO.track()`, yields native `Results` objects
@@ -116,6 +132,7 @@ adaptive_skip_tracker/
 ├── run_demo.py
 │
 ├── adaptive_tracker/              # core plugin package
+
 │   ├── __init__.py
 │   ├── main_api.py                # YOLO proxy class
 │   ├── lk_estimator.py            # masked LK flow + affine estimation
@@ -162,6 +179,27 @@ model.names / model.device / model.task # attribute passthrough
 - **Tiny objects (< 20px)**: LK optical flow may fail to find sufficient feature points, falling back to pure Kalman prediction.
 - **Extreme lighting changes**: Optical flow assumes brightness consistency; rapid flashes or strobe lights may cause tracking drift.
 - **Maximum skip interval**: Performance begins to degrade at interval > 10. Recommended range: **5 - 7**.
+
+---
+
+## Roadmap
+
+- [ ] **Multi-class-aware skip policy** — dynamically adjust keyframe interval per object class (e.g., pedestrians vs. vehicles)
+- [ ] **CUDA-accelerated optical flow backend** — optional GPU optical flow for scenarios where edge compute budgets allow
+- [ ] **C++ inference deployment** — ONNX Runtime / TensorRT export for fully C++ production pipelines
+- [ ] **Long-term occlusion recovery** — re-identification embeddings for tracks lost beyond N frames
+- [ ] **ROS2 integration** — out-of-the-box ROS2 node for robotics applications
+- [ ] **Large-scale dataset validation** — current benchmarks are limited to 50 videos; has not yet been validated on large-scale public benchmarks (MOT17, MOT20, etc.)
+
+PRs and suggestions are welcome! Feel free to reach out via the contact below.
+
+---
+
+## Contact
+
+📧 **numup@foxmail.com**
+
+For bugs, feature requests, or collaboration inquiries, please email the above address.
 
 ---
 
